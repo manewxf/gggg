@@ -23,25 +23,32 @@ interface NavItemProps {
   to: string
   icon: React.ReactNode
   label: string
+  isCollapsed?: boolean
 }
 
-const NavItem: React.FC<NavItemProps> = ({ to, icon, label }) => (
+const NavItem: React.FC<NavItemProps> = ({ to, icon, label, isCollapsed }) => (
   <NavLink
     to={to}
     className={({ isActive }) =>
-      `flex items-center p-3 rounded-xl transition-all duration-200 ${
+      `flex items-center ${isCollapsed ? 'justify-center' : ''} p-3 rounded-xl transition-all duration-200 ${
         isActive
           ? 'bg-indigo-600 text-white shadow-lg'
           : 'text-gray-600 hover:bg-gray-100 hover:text-indigo-600'
       }`
     }
+    title={isCollapsed ? label : undefined}
   >
     {icon}
-    <span className="ml-3 font-medium">{label}</span>
+    {!isCollapsed && <span className="ml-3 font-medium">{label}</span>}
   </NavLink>
 )
 
-export const Sidebar: React.FC = () => {
+interface SidebarProps {
+  isCollapsed: boolean
+  onToggle: () => void
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const navItems = [
@@ -113,25 +120,29 @@ export const Sidebar: React.FC = () => {
   const content = (
     <div className="flex flex-col h-full p-4">
       {/* Logo */}
-      <div className="flex items-center justify-start p-2 mb-8">
+      <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-start'} p-2 mb-8`}>
         <Zap className="w-8 h-8 text-indigo-600" />
-        <span className="ml-2 text-xl font-bold text-gray-900">MotorFlow</span>
+        {!isCollapsed && <span className="ml-2 text-xl font-bold text-gray-900">MotorFlow</span>}
       </div>
 
       {/* Main Navigation */}
       <nav className="space-y-2 flex-grow">
-        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3">
-          Операции
-        </p>
+        {!isCollapsed && (
+          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3">
+            Операции
+          </p>
+        )}
         {navItems.map((item) => (
-          <NavItem key={item.to} {...item} />
+          <NavItem key={item.to} {...item} isCollapsed={isCollapsed} />
         ))}
 
-        <p className="pt-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3">
-          Справочники
-        </p>
+        {!isCollapsed && (
+          <p className="pt-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3">
+            Справочники
+          </p>
+        )}
         {referenceItems.map((item) => (
-          <NavItem key={item.to} {...item} />
+          <NavItem key={item.to} {...item} isCollapsed={isCollapsed} />
         ))}
       </nav>
 
@@ -141,6 +152,7 @@ export const Sidebar: React.FC = () => {
           to="/app/settings"
           icon={<Settings className="w-5 h-5" />}
           label="Настройки"
+          isCollapsed={isCollapsed}
         />
       </div>
     </div>
@@ -157,7 +169,7 @@ export const Sidebar: React.FC = () => {
       </button>
 
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:block w-64 bg-white border-r border-gray-200 fixed h-full">
+      <aside className={`hidden lg:block ${isCollapsed ? 'w-20' : 'w-64'} bg-white border-r border-gray-200 fixed h-full transition-all duration-300`}>
         {content}
       </aside>
 

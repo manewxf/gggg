@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Sidebar } from './Sidebar'
 import { Header } from './Header'
 
@@ -13,11 +13,21 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   title,
   breadcrumbs,
 }) => {
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
+
   return (
     <div className="flex min-h-screen bg-gray-50">
-      <Sidebar />
-      <main className="flex-1 lg:ml-64">
-        <Header title={title} breadcrumbs={breadcrumbs} />
+      <Sidebar
+        isCollapsed={isSidebarCollapsed}
+        onToggle={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+      />
+      <main className={`flex-1 transition-all duration-300 ${isSidebarCollapsed ? 'lg:ml-20' : 'lg:ml-64'}`}>
+        <Header
+          title={title}
+          breadcrumbs={breadcrumbs}
+          onToggleSidebar={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+          isSidebarCollapsed={isSidebarCollapsed}
+        />
         <div className="p-4 lg:p-8">{children}</div>
       </main>
     </div>

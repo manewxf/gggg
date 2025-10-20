@@ -1,15 +1,17 @@
 import React from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
-import { LogOut, UserCircle } from 'lucide-react'
+import { LogOut, UserCircle, Menu } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 interface HeaderProps {
   title: string
   breadcrumbs?: { label: string; path: string }[]
+  onToggleSidebar: () => void
+  isSidebarCollapsed: boolean
 }
 
-export const Header: React.FC<HeaderProps> = ({ title, breadcrumbs }) => {
+export const Header: React.FC<HeaderProps> = ({ title, breadcrumbs, onToggleSidebar, isSidebarCollapsed }) => {
   const { user } = useAuth()
   const navigate = useNavigate()
 
@@ -20,8 +22,18 @@ export const Header: React.FC<HeaderProps> = ({ title, breadcrumbs }) => {
 
   return (
     <header className="sticky top-0 z-30 bg-white border-b border-gray-200 shadow-sm p-4 lg:p-6 flex justify-between items-center">
-      {/* Left Section: Title and Breadcrumbs */}
-      <div>
+      {/* Left Section: Burger + Title and Breadcrumbs */}
+      <div className="flex items-center gap-4">
+        {/* Desktop Burger Button */}
+        <button
+          onClick={onToggleSidebar}
+          className="hidden lg:flex p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-indigo-600 transition duration-150"
+          title={isSidebarCollapsed ? 'Развернуть меню' : 'Свернуть меню'}
+        >
+          <Menu className="w-6 h-6" />
+        </button>
+
+        <div>
         {breadcrumbs && breadcrumbs.length > 0 && (
           <nav className="text-sm font-medium text-gray-500 mb-1 hidden sm:block">
             {breadcrumbs.map((crumb, index) => (
@@ -44,6 +56,7 @@ export const Header: React.FC<HeaderProps> = ({ title, breadcrumbs }) => {
           </nav>
         )}
         <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
+        </div>
       </div>
 
       {/* Right Section: User Info and Logout */}
