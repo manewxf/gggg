@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
     import { ReceptionExcelRow } from '../../utils/parseReceptionExcel'
-    import { ChevronDown, ChevronRight, CreditCard as Edit2, Copy, Trash2, Plus, X, Bookmark, Search } from 'lucide-react'
+    import { ChevronDown, ChevronRight, CreditCard as Edit2, Copy, Trash2, Plus, X, Bookmark, Search, QrCode } from 'lucide-react'
+    import { useNavigate } from 'react-router-dom'
     import { CounterpartySelectionModal } from '../Acceptance/CounterpartySelectionModal'
     import { ReferenceSelectionModal } from '../Acceptance/ReferenceSelectionModal'
     import { ReferenceItemSelectionModal } from '../Acceptance/ReferenceItemSelectionModal'
@@ -481,9 +482,11 @@ import React, { useState } from 'react'
       onDeletePosition?: () => void
       onAddItemToGroup?: (workGroup: string) => void
       onSaveAsTemplate?: () => void
+      motorInventoryNumber?: string
     }
 
-    const PositionGroup: React.FC<PositionGroupProps> = ({ positionNumber, items, onItemUpdate, onItemNameUpdate, onItemDelete, onServiceNameUpdate, onSubdivisionNameUpdate, onAddGroupClick, onDuplicatePosition, onDeletePosition, onAddItemToGroup, onSaveAsTemplate }) => {
+    const PositionGroup: React.FC<PositionGroupProps> = ({ positionNumber, items, onItemUpdate, onItemNameUpdate, onItemDelete, onServiceNameUpdate, onSubdivisionNameUpdate, onAddGroupClick, onDuplicatePosition, onDeletePosition, onAddItemToGroup, onSaveAsTemplate, motorInventoryNumber }) => {
+      const navigate = useNavigate()
       const [isExpanded, setIsExpanded] = useState(true)
       const [isEditingServiceName, setIsEditingServiceName] = useState(false)
       const [isEditingSubdivisionName, setIsEditingSubdivisionName] = useState(false)
@@ -663,8 +666,8 @@ import React, { useState } from 'react'
                   onAddItemToGroup={onAddItemToGroup}
                 />
               ))}
-              {(onAddGroupClick || onDuplicatePosition || onDeletePosition || onSaveAsTemplate) && (
-                <div className="mt-4 pl-3 flex items-center gap-4">
+              {(onAddGroupClick || onDuplicatePosition || onDeletePosition || onSaveAsTemplate || motorInventoryNumber) && (
+                <div className="mt-4 pl-3 flex items-center gap-4 flex-wrap">
                   {onAddGroupClick && (
                     <button
                       onClick={onAddGroupClick}
@@ -702,6 +705,16 @@ import React, { useState } from 'react'
                     >
                       <Bookmark size={16} />
                       Сохранить как шаблон
+                    </button>
+                  )}
+                  {motorInventoryNumber && (
+                    <button
+                      onClick={() => navigate(`/app/motors/inventory/${motorInventoryNumber}`)}
+                      className="flex items-center gap-2 text-sm text-purple-600 hover:text-purple-700 font-medium transition-colors py-2"
+                      title="Просмотр и QR-код"
+                    >
+                      <QrCode size={16} />
+                      Просмотр и QR-код
                     </button>
                   )}
                 </div>
@@ -955,6 +968,7 @@ import React, { useState } from 'react'
                 onDeletePosition={onDeletePosition ? () => onDeletePosition(positionNumber) : undefined}
                 onAddItemToGroup={onAddItemToGroup ? (workGroup) => onAddItemToGroup(positionNumber, workGroup) : undefined}
                 onSaveAsTemplate={onSaveAsTemplate ? () => onSaveAsTemplate(positionNumber) : undefined}
+                motorInventoryNumber={items[0]?.motorInventoryNumber}
               />
             ))}
           </div>
