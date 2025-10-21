@@ -666,59 +666,55 @@ import React, { useState } from 'react'
                   onAddItemToGroup={onAddItemToGroup}
                 />
               ))}
-              {(onAddGroupClick || onDuplicatePosition || onDeletePosition || onSaveAsTemplate || motorInventoryNumber) && (
-                <div className="mt-4 pl-3 flex items-center gap-4 flex-wrap">
-                  {onAddGroupClick && (
-                    <button
-                      onClick={onAddGroupClick}
-                      className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors py-2"
-                    >
-                      <Plus size={16} />
-                      Создать группу работ
-                    </button>
-                  )}
-                  {onDuplicatePosition && (
-                    <button
-                      onClick={onDuplicatePosition}
-                      className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors py-2"
-                      title="Продублировать позицию"
-                    >
-                      <Copy size={16} />
-                      Продублировать позицию
-                    </button>
-                  )}
-                  {onDeletePosition && (
-                    <button
-                      onClick={onDeletePosition}
-                      className="flex items-center gap-2 text-sm text-red-600 hover:text-red-700 font-medium transition-colors py-2"
-                      title="Удалить позицию"
-                    >
-                      <X size={16} />
-                      Удалить позицию
-                    </button>
-                  )}
-                  {onSaveAsTemplate && (
-                    <button
-                      onClick={onSaveAsTemplate}
-                      className="flex items-center gap-2 text-sm text-teal-600 hover:text-teal-700 font-medium transition-colors py-2"
-                      title="Сохранить как шаблон"
-                    >
-                      <Bookmark size={16} />
-                      Сохранить как шаблон
-                    </button>
-                  )}
-                  {motorInventoryNumber && (
-                    <button
-                      onClick={() => navigate(`/app/motors/inventory/${motorInventoryNumber}`)}
-                      className="flex items-center gap-2 text-sm text-purple-600 hover:text-purple-700 font-medium transition-colors py-2"
-                      title="Просмотр и QR-код"
-                    >
-                      <QrCode size={16} />
-                      Просмотр и QR-код
-                    </button>
-                  )}
-                </div>
-              )}
+              <div className="mt-4 pl-3 flex items-center gap-4 flex-wrap">
+                {onAddGroupClick && (
+                  <button
+                    onClick={onAddGroupClick}
+                    className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors py-2"
+                  >
+                    <Plus size={16} />
+                    Создать группу работ
+                  </button>
+                )}
+                {onDuplicatePosition && (
+                  <button
+                    onClick={onDuplicatePosition}
+                    className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors py-2"
+                    title="Продублировать позицию"
+                  >
+                    <Copy size={16} />
+                    Продублировать позицию
+                  </button>
+                )}
+                {onDeletePosition && (
+                  <button
+                    onClick={onDeletePosition}
+                    className="flex items-center gap-2 text-sm text-red-600 hover:text-red-700 font-medium transition-colors py-2"
+                    title="Удалить позицию"
+                  >
+                    <X size={16} />
+                    Удалить позицию
+                  </button>
+                )}
+                {onSaveAsTemplate && (
+                  <button
+                    onClick={onSaveAsTemplate}
+                    className="flex items-center gap-2 text-sm text-teal-600 hover:text-teal-700 font-medium transition-colors py-2"
+                    title="Сохранить как шаблон"
+                  >
+                    <Bookmark size={16} />
+                    Сохранить как шаблон
+                  </button>
+                )}
+                <button
+                  onClick={() => navigate(`/app/motors/inventory/${motorInventoryNumber}`)}
+                  className="flex items-center gap-2 text-sm text-purple-600 hover:text-purple-700 font-medium transition-colors py-2"
+                  title="Просмотр и QR-код"
+                >
+                  <QrCode size={16} />
+                  Просмотр и QR-код
+                </button>
+              </div>
             </div>
           )}
         </div>
